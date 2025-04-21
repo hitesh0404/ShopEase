@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    
+        <div class="row">
+            {% for product in products %}
+                <div class="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ product.name }}</h3>
+                            <h4>₹ {{ product.price }}</h4>
+                            <p class="card-text">{{ product.description }}</p>
+                      </div>
+                    </div>
+                </div>
+            {% empty %}
+                <h1> No Products found</h1>
+            {% endfor %}
+        </div>
+        
+{% endblock main %}
+    
