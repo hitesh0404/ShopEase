@@ -4,11 +4,13 @@
 {% block main %}
     
     <div class="card text-start">
-        <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.image }}" />
+        <img class="card-img-top" style="height: 80vh; width: 50vw;" src="{{ product.image.url }}" alt="{{ product.image }}" />
         <div class="card-body">
             <h4 class="card-title">{{ product.name }}</h4>
             <span>₹ {{ product.price }}</span>
             <p class="card-text">{{ product.description }}</p>
+            <a href="" class="btn btn-warning">Update</a>&nbsp;&nbsp;
+            <a href="/inventory/product-delete/{{product.id}}" class="btn btn-danger">Delete</a>
         </div>
     </div>
     
