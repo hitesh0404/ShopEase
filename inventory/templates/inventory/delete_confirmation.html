@@ -17,9 +17,10 @@
             action="/inventory/product-delete/{{product.id}}/"
             method="post"
           >
+          {% csrf_token %}
             <button class="btn btn-warning" type="submit" value="Delete">
               Delete</button
-            ><br /><br />
+            >
           </form>
         </div>
         <div class="col-6">
