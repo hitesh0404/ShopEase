@@ -6,19 +6,51 @@ def product_list(request):
 
 from django.views import View
 from .models import Category,Brand
-from .forms import ProductCreateForm
+from account.models import User,SupplierProfile
+from .models import Brand
 class ProductCreate(View):
     def get(self,request): 
-        # categories = Category.objects.all()
-        # brands =  Brand.objects.all()
-        # context = {
-        #     'categories' : categories,
-        #     'brands' : brands,
-        # }
-        form = ProductCreateForm()
-        return render(request,'inventory/create_product.html',{'form':form} )
+        categories = Category.objects.all()
+        brands =  Brand.objects.all()
+        context = {
+            'categories' : categories,
+            'brands' : brands,
+        }
+        return render(request,'inventory/create_product.html',context )
+    
+
     def post(self,request):
-        pass
+        print(request.POST)
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        if request.FILES:
+            image = request.FILES.get('image')
+        else:
+            image = "product_images/main/gopro_hero10.jpg"
+        quantity = request.POST.get('quantity')
+        suplier = SupplierProfile.objects.first()
+        brand = request.POST.get('brand')
+        product = Product(
+                            name = name,
+                            price=float(price),
+                            quantity=int(quantity),
+                            image=image,
+                            suplier=suplier,
+                            brand=Brand.objects.get(pk=int(brand))
+                        )
+        product.save()
+        categories = Category.objects.all()
+        for category in categories:  #  [smartphone watch  homeapp]
+            cat = request.POST.get(category.name,None)
+            if cat:
+                product.category.add(category)
+        product.save() 
+        return redirect('product_list')
+
+         
+
+
+        
 
 def product_detail(request,id):
     product = get_object_or_404(Product,id=id)
@@ -31,3 +63,34 @@ def product_delete(request,id):
     elif request.method == "POST":
         product.delete()
     return redirect('product_list')
+
+ 
+from .forms import ProductUpdateForm
+
+class ProductUpdate(View):
+    def get(self,request,id):
+        print("here ")
+        product = get_object_or_404(Product,pk=id)
+        form = ProductUpdateForm(initial={
+            'name':product.name
+        })
+        context =   { 
+            'form':form,
+            'product':product
+        }
+        return render(request,'inventory/product_update.html',context)
+    
+    def post(self,request,id):
+        product = get_object_or_404(Product,pk=id)
+        form = ProductUpdateForm(request.POST)
+        if form.is_valid():
+            product.name = form.cleaned_data['name']
+            product.save()
+            return redirect('product_list')
+        else:
+            context =   { 
+            'form':form,
+            'product':product
+            }
+            return render(request,'inventory/product_update.html',context)
+        

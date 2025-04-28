@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    
+<form action="/inventory/product-update/{{product.id}}/" method="post">
+    {% csrf_token %}
+    
+    {% for field in form %}
+    
+    <label for="{{field.id}}">{{field.label_tag}}</label>
+    {{field}}
+        <p>{{field.help_text}}</p>
+        <div style="color: rgb(243, 13, 13)">
+            {% for error in field.errors %} 
+            {{error}}
+             {% endfor %}
+        </div>
+        
+        {% endfor %}
+
+  <input type="submit" value="Update Produt" />
+</form>
+
+{% endblock main %}
