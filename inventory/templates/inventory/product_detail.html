@@ -4,7 +4,9 @@
 {% block main %}
     
     <div class="card text-start">
+        {% if product.image %}
         <img class="card-img-top" style="height: 80vh; width: 50vw;" src="{{ product.image.url }}" alt="{{ product.image }}" />
+       `{% endif %}
         <div class="card-body">
             <h4 class="card-title">{{ product.name }}</h4>
             <span>₹ {{ product.price }}</span>

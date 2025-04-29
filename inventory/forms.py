@@ -7,21 +7,11 @@ class ProductUpdateForm(forms.Form):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class ProductUpdateModelForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = "__all__"
+        # exclude = ['image']
 
 
 
@@ -30,6 +20,3 @@ class ProductCreateForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
-
-
-

@@ -35,7 +35,6 @@ class User(AbstractUser):         # login Register    Pass hashing
         ('supplier', 'Supplier'),
     )
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
-
     def __str__(self):
         return f"{self.username} ({self.user_type})"
 

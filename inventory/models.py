@@ -7,10 +7,14 @@ class Brand(models.Model):
     logo = models.ImageField(upload_to='brand_logo')
     est_date = models.DateField()
     tagline = models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
 
 
 

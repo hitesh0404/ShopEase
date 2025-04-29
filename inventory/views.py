@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .models import Product
 def product_list(request):
+    print(request.user.user_type)
     products = Product.objects.all()
     return render(request, 'inventory/product_list.html', {'products': products})
 
@@ -11,6 +12,7 @@ from .models import Brand
 class ProductCreate(View):
     def get(self,request): 
         categories = Category.objects.all()
+        
         brands =  Brand.objects.all()
         context = {
             'categories' : categories,
@@ -67,30 +69,53 @@ def product_delete(request,id):
  
 from .forms import ProductUpdateForm
 
+# class ProductUpdate(View):
+#     def get(self,request,id):
+#         print("here ")
+#         product = get_object_or_404(Product,pk=id)
+#         form = ProductUpdateForm(initial={
+#             'name':product.name
+#         })
+#         context =   { 
+#             'form':form,
+#             'product':product
+#         }
+#         return render(request,'inventory/product_update.html',context)
+    
+#     def post(self,request,id):
+#         product = get_object_or_404(Product,pk=id)
+#         form = ProductUpdateForm(request.POST)
+#         if form.is_valid():
+#             product.name = form.cleaned_data['name']
+#             product.save()
+#             return redirect('product_list')
+#         else:
+#             context =   { 
+#             'form':form,
+#             'product':product
+#             }
+#             return render(request,'inventory/product_update.html',context)
+        
+
+from .forms import ProductUpdateModelForm
 class ProductUpdate(View):
     def get(self,request,id):
-        print("here ")
-        product = get_object_or_404(Product,pk=id)
-        form = ProductUpdateForm(initial={
-            'name':product.name
-        })
+        product = get_object_or_404(Product,id=id)
+        form = ProductUpdateModelForm(instance=product) 
         context =   { 
             'form':form,
             'product':product
         }
         return render(request,'inventory/product_update.html',context)
-    
     def post(self,request,id):
-        product = get_object_or_404(Product,pk=id)
-        form = ProductUpdateForm(request.POST)
+        product = get_object_or_404(Product,id=id)
+        print(request.POST,request.FILES)
+        form = ProductUpdateModelForm(request.POST,request.FILES,instance=product) 
         if form.is_valid():
-            product.name = form.cleaned_data['name']
-            product.save()
-            return redirect('product_list')
-        else:
-            context =   { 
+            form.save()
+            return redirect("product_list")
+        context =   { 
             'form':form,
             'product':product
-            }
-            return render(request,'inventory/product_update.html',context)
-        
+        }
+        return render(request,'inventory/product_update.html',context)
