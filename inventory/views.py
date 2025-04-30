@@ -1,14 +1,19 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .models import Product
-def product_list(request):
-    print(request.user.user_type)
-    products = Product.objects.all()
-    return render(request, 'inventory/product_list.html', {'products': products})
-
 from django.views import View
 from .models import Category,Brand
 from account.models import User,SupplierProfile
 from .models import Brand
+
+def product_list(request):
+    if request.user.is_authenticated and request.user.user_type == "supplier":
+        supplier = get_object_or_404(SupplierProfile,user = request.user)
+        products = Product.objects.filter(suplier = supplier )
+    else:
+        products = Product.objects.all()
+    return render(request, 'inventory/product_list.html', {'products': products})
+
+
 class ProductCreate(View):
     def get(self,request): 
         categories = Category.objects.all()
@@ -19,8 +24,6 @@ class ProductCreate(View):
             'brands' : brands,
         }
         return render(request,'inventory/create_product.html',context )
-    
-
     def post(self,request):
         print(request.POST)
         name = request.POST.get('name')
@@ -30,14 +33,14 @@ class ProductCreate(View):
         else:
             image = "product_images/main/gopro_hero10.jpg"
         quantity = request.POST.get('quantity')
-        suplier = SupplierProfile.objects.first()
+        supplier = get_object_or_404(SupplierProfile,user = request.user)
         brand = request.POST.get('brand')
         product = Product(
                             name = name,
                             price=float(price),
                             quantity=int(quantity),
                             image=image,
-                            suplier=suplier,
+                            suplier=supplier,
                             brand=Brand.objects.get(pk=int(brand))
                         )
         product.save()

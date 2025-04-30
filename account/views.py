@@ -1,11 +1,32 @@
-from django.shortcuts import render
+from django.contrib.auth import authenticate
+from django.contrib.auth import login,logout
+from django.shortcuts import redirect
+                
+from .forms import LoginForm,RegisterForm
+from django.shortcuts import render,redirect
 from django.views import View
 # Create your views here.
-from .forms import LoginForm
+
+def my_logout(request):
+    logout(request)
+    return redirect('login')
+
 class RegisterView(View):
-    pass
-class LoginView(View):
+    def get(self,request):
+        form = RegisterForm()
+        return render(request,'account/register.html',{'form':form})
+    def post(self,request):
+        form = RegisterForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+        else:
+            return render(request,'account/register.html',{'form':form})
     
+
+
+    
+class LoginView(View):
     def get(self,request):
         form = LoginForm()
         return render(request,'account/login.html',{'form':form})
@@ -15,12 +36,9 @@ class LoginView(View):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            from django.contrib.auth import authenticate
             user = authenticate(request,username=username,password=password)
             if user:
-                from django.contrib.auth import login
                 login(request,user)
-                from django.shortcuts import redirect
                 return redirect('/')
             else:
                 return render(request,'account/login.html',{'form':form})

@@ -46,15 +46,19 @@
               <li class="nav-item">
                 <a class="nav-link" href="/inventory/product-list/">Products</a>
               </li>
-
               {% if request.user.user_type == 'supplier' %}
               <li class="nav-item">
                 <a class="nav-link" href="/inventory/product/create/"
                   >Create Product</a
                 >
               </li>
-              {% endif  %}
-              {% if not request.user.is_authenticated %}
+              {% endif %}
+              {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="/account/logout/">Logout</a>
+              </li>
+              {% endif %} 
+              {% if not request.path == "/account/login/" and  not request.path == "/account/register/" and  not request.user.is_authenticated  %}
               <li class="nav-item">
                 <a class="nav-link" href="/account/login/">Login</a>
               </li>
@@ -62,7 +66,7 @@
                 <a class="nav-link" href="/account/register/">Register</a>
               </li>
               {% endif %}
-              
+
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -73,6 +77,9 @@
                   aria-expanded="false"
                   >Dropdown</a
                 >
+                <li>
+                  Hi {{ request.user.username }}
+                </li>
                 <div class="dropdown-menu" aria-labelledby="dropdownId">
                   <a class="dropdown-item" href="#">Action 1</a>
                   <a class="dropdown-item" href="#">Action 2</a>

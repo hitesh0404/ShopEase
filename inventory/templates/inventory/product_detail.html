@@ -11,8 +11,12 @@
             <h4 class="card-title">{{ product.name }}</h4>
             <span>₹ {{ product.price }}</span>
             <p class="card-text">{{ product.description }}</p>
+            {% if request.user.user_type == 'supplier' %}
             <a href="/inventory/product-update/{{product.id}}" class="btn btn-warning">Update</a>&nbsp;&nbsp;
             <a href="/inventory/product-delete/{{product.id}}" class="btn btn-danger">Delete</a>
+            {% else %}
+            <a href="/cart/add-to-cart/" class="btn btn-primary">Add to Cart</a>
+            {% endif %}
         </div>
     </div>
     
