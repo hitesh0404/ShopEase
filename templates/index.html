@@ -1,6 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block main %}
 
-{% block main %}
-    <h1>Index page</h1>
+<div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+  <ol class="carousel-indicators">
+    {% for c in carousel %}
+    <li
+      data-bs-target="#carouselId"
+      data-bs-slide-to="{{ forloop.counter0 }}"
+      class="{% if forloop.first %}active{% endif %}"
+      aria-current="{% if forloop.first %}true{% endif %}"
+      aria-label="Slide {{ forloop.counter }}"
+    ></li>
+    {% endfor %}
+  </ol>
+
+  <div class="carousel-inner" role="listbox">
+    {% for c in carousel %}
+
+    <div
+      class="carousel-item {% if forloop.first %} active {% endif %}"
+    >
+      {{ c.image_content|safe }}
+      <div class="carousel-caption d-none d-md-block">
+        {{ c.title|safe }} {{ c.description|safe }}
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselId"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselId"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
 {% endblock main %}
-    
