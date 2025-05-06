@@ -1,4 +1,18 @@
-{% extends 'base.html' %} {% block main %}
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block style %}
+
+
+    <link rel="stylesheet" href="{% static '/main/css/carousel.css' %}">
+
+  
+{% endblock style %}
+
+  
+
+{% block main %}
 
 <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
   <ol class="carousel-indicators">
