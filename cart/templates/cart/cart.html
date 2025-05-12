@@ -1,17 +1,39 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
-    {% block style %}
-    {% endblock style %} 
-    {% block main %}
 
-    <div class="row">
-        <div class="card text-white bg-primary">
-            <img class="card-img-top" src="holder.js/100px180/" alt="Title" />
-            <div class="card-body">
-            <h4 class="card-title">Title</h4>
-            <p class="card-text">Text</p>
+{% block style %}
+<link rel="stylesheet" href="{% static 'main/css/cart.css/' %}">
+{% endblock style %}
+
+{% block main %}
+<div class="container mt-4">
+    {% for c in cart %}
+        <div class="cart-card">
+            <img class="cart-img" src="{{ c.product.image.url }}" alt="{{ c.product.name }}">
+            <div class="cart-details">
+                <h4>{{ c.product.name }}</h4>
+                <p><strong>Price:</strong> ${{ c.product.price }}</p>
+                <p><strong>Quantity:</strong>
+                    <a href="/cart/decrease-quantity/{{c.id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dash bg-danger" viewBox="0 0 16 16">
+                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                        </svg>
+                    </a>
+                    {{ c.quantity }} 
+                    <a href="/cart/increase-quantity/{{c.id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg bg-success " viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </a>
+                </p>
+
             </div>
         </div>
+    {% empty %}
+        <img class="empty-cart" src="https://w7.pngwing.com/pngs/91/848/png-transparent-empty-cart-illustration-thumbnail.png" alt="Empty Cart">
+    {% endfor %}
+    <div>
+            <a href="/order/checkout/" class="btn btn-success">Checkout</a>
     </div>
-
-    {% endblock main %}
+</div>
+{% endblock main %}

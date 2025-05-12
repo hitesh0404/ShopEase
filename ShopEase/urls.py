@@ -21,6 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('inventory/',include('inventory.urls')),
     path('account/',include('account.urls')),
+    path('cart/',include('cart.urls')),
+    path('payment/',include('payment.urls')),
+    path('order/',include('order.urls')),
     path('',include('display.urls')),
     # path('',TemplateView.as_view(template_name="index.html")),
 ]

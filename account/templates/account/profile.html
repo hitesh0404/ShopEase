@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <p>Username : {{user.username}}</p>
+    <p>Emil : {{user.email}}</p>
+    <p>First Name : {{user.first_name |default:"John"}}</p>
+{% endblock main %}
+    
