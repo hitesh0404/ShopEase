@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_it2pgn(m(gzqs3u$eql-hwmfq%-ndb2mh8+^*p^dxanh+!2mq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
@@ -83,10 +83,11 @@ WSGI_APPLICATION = 'ShopEase.wsgi.application'
 import os 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS':{
-        'read_default_file': os.path.join(BASE_DIR,'my.cnf'),
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME':BASE_DIR / 'db.sqlite3',
+        # 'OPTIONS':{
+        # 'read_default_file': os.path.join(BASE_DIR,'my.cnf'),
+        # }
     }
 }
 

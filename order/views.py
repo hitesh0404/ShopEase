@@ -29,7 +29,7 @@ def checkout(request):
             "delivery_date":datetime.now().date(),
         }
     )
-    
+    order.pickup_date = datetime.now().date()
     total=0
     cart = Cart.objects.filter(user=request.user)
     for cart_item in cart:
@@ -54,4 +54,20 @@ def checkout(request):
         "order":order,
         "RAZORPAY_KEY_ID":settings.RAZORPAY_KEY_ID
     } 
+    from payment.models import Payment
+    my_payment,create = Payment.objects.get_or_create(
+        order = order,
+        defaults={
+            'user': request.user,
+            'razorpay_order_id': payment.get('id'),
+            'amount' : order.order_amount,
+            'status':"PENDING",
+            'method': "RAZORPAY",
+        }
+    )
+    my_payment.razorpay_order_id = payment.get('id')
+    my_payment.amount =  order.order_amount
+    my_payment.user = request.user
+    my_payment.save()
+    order.save()
     return render(request,'order/checkout.html',context)
